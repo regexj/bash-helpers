@@ -4,7 +4,7 @@
 #   Print out info for aws-vault   #
 ####################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 cat <<EOF
 A handy tool for terminal based AWS access using aws-vault. It allows you to store your AWS credentials in your operating system's secure keystore and then use them from the command line. It also allows you to assume roles and use MFA.

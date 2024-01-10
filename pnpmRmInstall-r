@@ -6,7 +6,7 @@
 #   fresh pnpm install                      #
 #############################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 originalPwd=$(pwd)
 currentDir=${originalPwd##*/}

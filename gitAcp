@@ -7,7 +7,7 @@
 #   monorepo, use gitAcpRoot                             #
 ##########################################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 msg=$1
 

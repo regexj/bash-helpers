@@ -7,8 +7,8 @@
 
 # Based off this dead script with some tweaks: https://www.npmjs.com/package/bitbucket-pr?activeTab=code
 
-source ~/bin/_colours
-source ~/bin/_functions
+source ~/bash-helpers/_colours
+source ~/bash-helpers/_functions
 
 # First parameter must contain the root directory, otherwise exit
 rootDir=$1

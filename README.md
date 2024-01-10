@@ -4,10 +4,10 @@
 
 If you don't have OhMyZsh installed, install that first as it makes the terminal so much nicer to use.
 
-1. If it doesn't exist, create a folder in your home (`~`) directory `/bin`
-2. Clone this repo to to `~/bin`: 
+1. If it doesn't exist, create a folder in your home (`~`) directory `/bash-helpers`
+2. Clone this repo to to `~/bash-helpers`: 
 ```
-cd ~/bin
+cd ~/bash-helpers
 git clone git@bitbucket.org:nusxtra/bash-helpers.git ./
 ```
 3. Export to your PATH environment variable:
@@ -18,14 +18,14 @@ nano .zshrc
 Add the next 2 lines to the bottom of the file, save and exit
 ```
 # Bash helpers
-export PATH=~/bin:~/bin/private:"$PATH"
+export PATH=~/bash-helpers:~/bash-helpers/private:"$PATH"
 ```
 4. Restart your shell.
 ```
 exec zsh -l
 ```
 
-That is it, you are good to go... all scripts in the `~/bin` folder are accessible via the terminal from any location. Best of all tab autocompletion works! Type in `gita` and press `tab` and it will autocomplete to `gitAcp` (git add-commit-push).
+That is it, you are good to go... all scripts in the `~/bash-helpers` folder are accessible via the terminal from any location. Best of all tab autocompletion works! Type in `gita` and press `tab` and it will autocomplete to `gitAcp` (git add-commit-push).
 
 
 ## Permission denied
@@ -35,9 +35,9 @@ If you see an error like this:
 zsh: permission denied: gitStatus
 ```
 
-Then the bash script is not executable. Ensure you have the correct execute permissions on your bash scripts in your `~/bin` folder.
+Then the bash script is not executable. Ensure you have the correct execute permissions on your bash scripts in your `~/bash-helpers` folder.
 ```
-cd ~/bin
+cd ~/bash-helpers
 chmod -R +x *
 ```
 

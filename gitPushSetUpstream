@@ -6,7 +6,7 @@
 #   required                              #
 ###########################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 branchName=$(git branch | grep \* | cut -d ' ' -f2)
 

@@ -8,8 +8,8 @@
 #   exists in remote and prints warning if it does   #
 ######################################################
 
-source ~/bin/_colours
-source ~/bin/_functions
+source ~/bash-helpers/_colours
+source ~/bash-helpers/_functions
 
 branchName=$1
 

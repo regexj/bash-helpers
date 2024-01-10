@@ -5,7 +5,7 @@
 #   sure that develop is up to date                  #
 ######################################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 echo "Making sure develop branch is up to date"
 git fetch origin develop:develop

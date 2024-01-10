@@ -7,7 +7,7 @@
 # Note: When running this script via another script, add a . at the start of the command, i.e.: ". cdRoot"
 # This ensures it is run in the current shell, and not a sub-shell. An example of this can be seen in gitAcpRoot
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 originalPwd=$(pwd)
 

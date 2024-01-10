@@ -5,12 +5,12 @@
 #   on origin/develop                     #
 ###########################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 echo "Updating bash-helpers repo..."
 
 originalPwd=$(pwd)
-cd ~/bin || exit
+cd ~/bash-helpers || exit
 
 git checkout develop
 git pull

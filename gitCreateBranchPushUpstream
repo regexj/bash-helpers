@@ -6,7 +6,7 @@
 #   gitPushSetUpstream                      #
 #############################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 currentBranchName=$(git branch | grep \* | cut -d ' ' -f2)
 

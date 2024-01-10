@@ -5,7 +5,7 @@
 #   terminal                                         #
 ######################################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 # Show local or remote according to flags set
 while getopts ":lr" opt; do

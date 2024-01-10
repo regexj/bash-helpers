@@ -5,7 +5,7 @@
 #   for merging many commits into a single commit      #
 ########################################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 echo "1. Ensure you are at the root of the project. Handling merge conflicts during a rebase can be a bit of headache so if you want to avoid that recommend you merge develop into your branch and handle any merge conflicts via your usual methods, then start this process at step 4 skipping the rebase."
 echo "2. ${BLUE}gitAcp \"<commit message>\"${RESTORE}"

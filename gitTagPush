@@ -7,7 +7,7 @@
 #   format and higher than last tag etc.                #
 #########################################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 tag=$1
 msg=$2

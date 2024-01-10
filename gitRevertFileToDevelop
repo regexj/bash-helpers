@@ -6,7 +6,7 @@
 #   immediately commits that reversion         #
 ################################################
 
-source ~/bin/_colours
+source ~/bash-helpers/_colours
 
 file=$1
 
