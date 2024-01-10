@@ -1,0 +1,18 @@
+#!/bin/bash
+
+#######################################################
+#   Prints the latest tag version into the terminal.  #
+#######################################################
+
+source ~/bin/_colours
+
+branchName=$(git branch | grep \* | cut -d ' ' -f2)
+
+if [ "$branchName" != "main" ]; then
+    echo ${RED}"You are on not the main branch - tags are only added to the main branch"
+    exit 1
+fi
+
+# Get the current tag from git and display it in the terminal
+currentTag=$(git describe --tags --abbrev=0)
+echo "Latest tag at origin: ${LGREEN}${currentTag}${RESTORE}"

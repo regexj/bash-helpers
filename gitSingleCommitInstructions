@@ -1,0 +1,20 @@
+#!/bin/bash
+
+########################################################
+#   Print in the terminal the instructions to follow   #
+#   for merging many commits into a single commit      #
+########################################################
+
+source ~/bin/_colours
+
+echo "1. Ensure you are at the root of the project. Handling merge conflicts during a rebase can be a bit of headache so if you want to avoid that recommend you merge develop into your branch and handle any merge conflicts via your usual methods, then start this process at step 4 skipping the rebase."
+echo "2. ${BLUE}gitAcp \"<commit message>\"${RESTORE}"
+echo "3. ${BLUE}git rebase origin/develop${RESTORE} - This will get latest develop, and put all changes at the tip of the branch"
+echo "4. ${BLUE}git reset origin/develop${RESTORE} - This will show all the changes since the work started (without the step above it won't work as expected)"
+echo "5. Review the work as a single entity and handle any conflicts, when happy with the changes:"
+echo "6. ${BLUE}git add .${RESTORE}"
+echo "7. ${BLUE}git commit -m 'feat: short description of feature'${RESTORE} - Important! Follow conventional commits messaging standards: https://www.conventionalcommits.org/en/v1.0.0/"
+echo "8. ${BLUE}git push -f${RESTORE} - You will need a force push as you have rewritten history"
+echo ""
+echo ""
+echo "${GREEN}Congrats! We now have a single commit using conventional commits messaging standards, which can now be used to auto-generate release notes"

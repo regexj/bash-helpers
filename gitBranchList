@@ -1,0 +1,49 @@
+#!/bin/bash
+
+######################################################
+#   Display a list of avaiable git branches in the   #
+#   terminal                                         #
+######################################################
+
+source ~/bin/_colours
+
+# Show local or remote according to flags set
+while getopts ":lr" opt; do
+  case $opt in
+  l)
+    showLocal=true
+    ;;
+  r)
+    showRemote=true
+    ;;
+  ?)
+    echo "Invalid option: -$OPTARG" >&2
+    exit 1
+    ;;
+  esac
+done
+
+# If no flags are set, show both
+if [[ $OPTIND -eq 1 ]]; then
+  echo "No options were passed"
+  showLocal=true
+  showRemote=true
+fi
+
+if [[ -n $showLocal ]]; then
+  echo "Local branches:"
+  for branch in $(git for-each-ref --format='%(refname:short)' refs/heads); do
+    echo "${GREEN} ${branch}${RESTORE}"
+  done
+fi
+
+if [[ -n $showRemote ]]; then
+  if [[ -n $showLocal ]]; then
+    echo ""
+  fi
+  echo "Remote branches:"
+  origin="origin/"
+  for branch in $(git for-each-ref --format='%(refname:short)' refs/remotes); do
+    echo "${GREEN} ${branch//$origin/}${RESTORE}"
+  done
+fi

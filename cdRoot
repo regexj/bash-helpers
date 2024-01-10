@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#####################################################
+#   Change directory to root of specified project   #
+#####################################################
+
+# Note: When running this script via another script, add a . at the start of the command, i.e.: ". cdRoot"
+# This ensures it is run in the current shell, and not a sub-shell. An example of this can be seen in gitAcpRoot
+
+source ~/bin/_colours
+
+originalPwd=$(pwd)
+
+# First parameter must contain the root directory, otherwise exit
+rootDir=$1
+# Alternatively, set a default rootDir here, e.g. arg1=$1; rootDir="${arg1:-your-repo-name}"
+if [ -z "$rootDir" ]; then
+  echo "${RED}You must provide the root directory as the first parameter.${RESTORE}"
+  exit 1
+fi
+
+# If pwd does not contain rootDir then exit
+if [[ "$originalPwd" != *"$rootDir"* ]]; then
+  echo "${RED}You must be in the $rootDir project to run this script${RESTORE}"
+  exit 1
+fi
+
+currentPwd=$originalPwd
+currentDir=${currentPwd##*/}
+
+while [ "$currentDir" != "$rootDir" ]; do
+  cd ../
+  currentPwd=$(pwd)
+  currentDir=${currentPwd##*/}
+  if [ "$currentDir" == "/" ]; then
+    echo "${RED}Error: Did not find $rootDir directory, returning to origin"
+    cd "$originalPwd" || exit
+    echo "pwd: ${currentPwd}"
+    exit 1
+  fi
+done
+
+echo "${GREEN}You are in the root of $rootDir"
+echo "pwd: $currentPwd${RESTORE}"

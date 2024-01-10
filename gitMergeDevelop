@@ -1,0 +1,16 @@
+#!/bin/bash
+
+######################################################
+#   Merge develop into current branch, first makes   #
+#   sure that develop is up to date                  #
+######################################################
+
+source ~/bin/_colours
+
+echo "Making sure develop branch is up to date"
+git fetch origin develop:develop
+
+echo "Merging develop into current branch"
+git merge develop
+
+echo "${GREEN}Success. Handle any conflicts if there any and then run git push${RESTORE}"

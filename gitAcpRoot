@@ -1,0 +1,30 @@
+#!/bin/bash
+
+###################################################
+#   Runs cdRoot to get to the root of the repo    #
+#   then runs gitAcp to git add commit push       #
+#   every single file that has any changes in     #
+#   the entire monorepo                           #
+###################################################
+
+source ~/bin/_colours
+
+originalPwd=$(pwd)
+
+# First argument must be monorepo name, second argument the commit message, exit if either are missing
+repoName=$1
+commitMessage=$2
+if [ -z "$repoName" ] || [ -z "$commitMessage" ]; then
+  echo "${RED}Error: You must pass the monorepo name as the first argument and the commit message as the second argument to this script."
+  exit 1
+fi
+
+. cdRoot "$repoName"
+
+echo "${GREEN}Running git add, commit, push${RESTORE}"
+
+gitAcp "$commitMessage"
+
+echo "${GREEN}Done! Returning to original directory.${RESTORE}"
+
+cd "$originalPwd" || exit

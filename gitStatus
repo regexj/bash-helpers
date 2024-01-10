@@ -1,0 +1,9 @@
+#!/bin/bash
+
+################################
+#   Git fetch and git status   #
+################################
+
+git fetch
+git status
+

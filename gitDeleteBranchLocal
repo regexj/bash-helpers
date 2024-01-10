@@ -1,0 +1,62 @@
+#!/bin/bash
+
+######################################################
+#   Deletes a local branch. If we are on the local   #
+#   branch will check no uncommitted changes, and    #
+#   if not will checkout develop before deleting     #
+#   local branch. Lastly runs a check to see if it   #
+#   exists in remote and prints warning if it does   #
+######################################################
+
+source ~/bin/_colours
+source ~/bin/_functions
+
+branchName=$1
+
+if [[ -z "$branchName" ]]; then
+  echo "${RED}You must pass a branch name to check as the 1st arg"
+  exit 1
+fi
+
+if [[ -z $(gitBranchExistsInLocal $branchName) ]]; then
+  echo "${RED}Branch '${branchName}' does not exist locally, nothing to delete${RESTORE}"
+  gitBranchList -l
+  exit 1
+fi
+
+# Check if we are on the branch we want to delete
+if [[ $(git branch | grep \* | cut -d ' ' -f2) == "$branchName" ]]; then
+  # Check if there are any uncommitted changes
+  if [[ $(git status --porcelain) ]]; then
+    while true; do
+      read -p -r "${RED}Warning: You have uncommitted changes which may relate '${branchName}'. Would you like to abort the delete so you can commit or stash them first?${RESTORE} (y/n) " yn
+      case $yn in
+      [Yy]*)
+        echo 'Exiting...'
+        exit 1
+        ;;
+      [Nn])
+        echo 'Continuing...'
+        break
+        ;;
+      *) echo "Please answer yes or no." ;;
+      esac
+    done
+  fi
+
+  # Checkout develop
+  echo "${BLUE}Checking out develop..${RESTORE}"
+  gitCheckoutPullDevelop
+fi
+
+# Delete the branch
+git branch -d "$branchName"
+
+echo "${GREEN}Branch '${branchName}' deleted locally!${RESTORE}"
+
+# Pop a notice in the terminal if the branch exists on remote
+if [[ $(gitBranchExistsInRemote "$branchName") ]]; then
+  echo ""
+  echo ""
+  echo "${PURPLE}Notice: Branch '${branchName}' exists on remote, if you need to delete that too...${RESTORE}"
+fi

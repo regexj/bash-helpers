@@ -1,0 +1,36 @@
+#!/bin/bash
+
+#############################################
+#   Creates a new branch from develop and   #
+#   pushes it to origin using the script    #
+#   gitPushSetUpstream                      #
+#############################################
+
+source ~/bin/_colours
+
+currentBranchName=$(git branch | grep \* | cut -d ' ' -f2)
+
+# If the current directory is not develop, then we cannot create a new branch
+if [[ "$currentBranchName" != "develop" ]]; then
+  echo "${RED}Error: You are not on the develop branch. You must be on the develop branch to create new branches."
+  echo "You are on branch: $currentBranchName${RESTORE}"
+  exit 1
+fi
+
+# The new branch name we are creating must be passed as variable 1, ensure a name is passed
+branchName=$1
+if [ -z "$branchName" ]; then
+  echo "${RED}Error: You must pass a branch name as the first parameter to this script."
+  exit 1
+fi
+
+echo "Creating new branch: ${LMAGENTA}${branchName}${RESTORE}"
+git branch "$branchName" && git checkout "$branchName"
+
+# Branch created, use the gitPushSetUpstream script to push the branch to origin as it asks the user to confirm the name
+if ! gitPushSetUpstream; then
+  # If they say no to pushing the branch, delete the local branch automatically
+  echo "${RED}Incorrect branch name. Deleting local git branch...${RESTORE}"
+  sleep 1
+  gitDeleteBranchLocal "$branchName"
+fi

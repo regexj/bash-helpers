@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#####################################
+#   Git checkout develop and pull   #
+#####################################
+
+git checkout develop
+git pull

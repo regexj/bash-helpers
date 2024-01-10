@@ -1,0 +1,10 @@
+#!/bin/bash
+
+##################################
+#   Git checkout main and pull   #
+##################################
+
+git checkout main
+git pull
+
+gitLatestTag

@@ -1,0 +1,34 @@
+#!/bin/bash
+
+########################################
+#   Calculates and opens the correct   #
+#   bitBucket link to start a PR       #
+########################################
+
+# Based off this dead script with some tweaks: https://www.npmjs.com/package/bitbucket-pr?activeTab=code
+
+source ~/bin/_colours
+source ~/bin/_functions
+
+# First parameter must contain the root directory, otherwise exit
+rootDir=$1
+# Alternatively, set a default rootDir here, e.g. arg1=$1; rootDir="${arg1:-your-repo-name}"
+if [ -z "$rootDir" ]; then
+  echo "${RED}You must provide the root directory as the first parameter.${RESTORE}"
+  exit 1
+fi
+
+# Navigate to root to get the project name from which we get the org name 
+. cdRoot "$rootDir"
+project=${PWD##*/}
+org=$(git config --get remote.origin.url | grep -Eo "(\w*)/$project.git\/?$" | cut -d/ -f1)
+
+# Get the current branch name and encode it
+branch=$(git rev-parse --abbrev-ref HEAD)
+branchEncoded=$(rawurlencode "$branch")
+
+# Create and open the link
+link="https://bitbucket.org/${org}/${project}/pull-requests/new?source=${branchEncoded}"
+
+echo "${GREEN}Opening pull request link... ${link}"
+open "${link}"

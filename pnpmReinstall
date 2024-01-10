@@ -1,0 +1,51 @@
+#!/bin/bash
+
+#################################################
+#   Removes the pnpm-lock.yaml file and does    #
+#   a fresh pnpm install. Quicker lightweight   #
+#   version of pnpmRmInstall-r                  #
+#################################################
+
+# shellcheck source=/dev/null
+source ~/bin/_colours
+
+originalPwd=$(pwd)
+currentDir=${originalPwd##*/}
+
+# First parameter must contain the root directory, otherwise exit
+rootDir=$1
+# Alternatively, set a default rootDir here, e.g. arg1=$1; rootDir="${arg1:-your-repo-name}"
+if [ -z "$rootDir" ]; then
+  echo "${RED}You must provide the root directory as the first parameter.${RESTORE}"
+  exit 1
+fi
+
+# If pwd does not contain rootDir then exit
+if [[ "$originalPwd" != *"$rootDir"* ]]; then
+  echo "$originalPwd"
+  echo "$rootDir"
+  echo "${RED}You must be in the '$rootDir' project to run this script"
+  exit 1
+fi
+
+# If currentDir is not rootDir then run cdRoot
+if [ "$currentDir" != "$rootDir" ]; then
+  echo "${CYAN}You are not in the root of $rootDir, running cdRoot...${RESTORE}"
+  . cdRoot "$rootDir"
+  sleep 2
+fi
+
+# Remove the pnpm-lock.yaml file and run a fresh install
+echo "${GREEN}Removing pnpm-lock.yaml${RESTORE}"
+rm pnpm-lock.yaml
+
+echo "${GREEN}Running pnpm install${RESTORE}"
+pnpm install
+
+echo ""
+echo ""
+echo ""
+
+echo "${GREEN}pnpm-lock.yaml removed and fresh pnpm install run! Returning to original directory.${RESTORE}"
+
+cd "$originalPwd" || exit

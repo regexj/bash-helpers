@@ -1,0 +1,15 @@
+#!/bin/bash
+
+########################################
+#   Show latest git commit messages,   #
+#   default to display 5               #
+########################################
+
+gitHistory() {
+    git --no-pager log --oneline -n "$1"
+}
+
+arg1=$1
+historyLength="${arg1:-5}"
+
+gitHistory "$historyLength"

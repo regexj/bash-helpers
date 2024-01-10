@@ -1,0 +1,40 @@
+#!/bin/bash
+
+###########################################
+#   Pushes the local branch you have up   #
+#   to origin/develop, confirmation       #
+#   required                              #
+###########################################
+
+source ~/bin/_colours
+
+branchName=$(git branch | grep \* | cut -d ' ' -f2)
+
+if [ "$branchName" == "main" ]; then
+    echo "${RED}You are on the main branch. You should not use this command on main."
+    exit 1
+fi
+
+if [ "$branchName" == "develop" ]; then
+    echo "${RED}You are on the develop branch. You should not use this command on develop."
+    exit 1
+fi
+
+echo "You are on the branch: ${LMAGENTA}${branchName}${RESTORE}"
+
+while true; do
+    read -p -r "Is this the correct branch? Pressing yes will run the following command:
+${BLUE}git push --set-upstream origin $branchName${RESTORE}
+(y/n) " yn
+    case $yn in
+    [Yy]*)
+        git push --set-upstream origin "$branchName"
+        break
+        ;;
+    [Nn])
+        echo 'Exiting...'
+        exit 1
+        ;;
+    *) echo "Please answer yes or no." ;;
+    esac
+done

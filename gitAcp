@@ -1,0 +1,24 @@
+#!/bin/bash
+
+##########################################################
+#   Runs git add, commit and push in one go. This will   #
+#   be scoped to the current directory you are in. If    #
+#   you want to include every file in the entire         #
+#   monorepo, use gitAcpRoot                             #
+##########################################################
+
+source ~/bin/_colours
+
+msg=$1
+
+if [ -z "$msg" ]; then
+  echo "${RED}You must pass a message as the 1st arg - this forms the git commit message${RESTORE}"
+  exit 1
+fi
+
+echo "From"
+pwd
+
+git add .
+git commit -m "${msg}"
+git push

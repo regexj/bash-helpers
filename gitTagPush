@@ -1,0 +1,92 @@
+#!/bin/bash
+
+#########################################################
+#   Checks we are on the main branch, then adds a tag   #
+#   and pushes to origin to trigger CI etc. Runs        #
+#   validation against new tag to make sure correct     #
+#   format and higher than last tag etc.                #
+#########################################################
+
+source ~/bin/_colours
+
+tag=$1
+msg=$2
+
+if [ -z "$tag" ]; then
+  echo "${RED}You must pass a tag as the 1st arg - this forms the git tag"
+  exit 1
+fi
+
+# TODO - make optional, present a confirm there is no message prompt instead
+if [ -z "$msg" ]; then
+  echo "${RED}You must pass a message as the 2nd arg - this forms the git tag message"
+  exit 1
+fi
+
+branchName=$(git branch | grep \* | cut -d ' ' -f2)
+
+if [ "$branchName" != "main" ]; then
+  echo "${RED}You are on not the main branch - tags should only be added to the main branch"
+  exit 1
+fi
+
+# Ensure branch is up to date
+git fetch
+
+if [ $(git rev-parse HEAD) != $(git rev-parse @{u}) ]; then
+  echo "${RED}Your local branch is not up to date with origin/main - please pull the latest changes"
+  exit 1
+fi
+
+# Ensure tag is in the correct format
+if ! [[ $tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "${RED}Tag must be in SemVer format, e.g. v1.2.3. You submitted: ${tag}"
+  exit 1
+fi
+
+# Get the current tag from git, remove the v, split the numbers at the . and ensure new tag is higher
+currentTag=$(git describe --tags --abbrev=0)
+currentTagNum=$(echo $currentTag | cut -c 2-)
+thisTagNum=$(echo $tag | cut -c 2-)
+tagErrorMessage="New tag must be higher than the latest tag ($currentTag). You submitted: ${tag}"
+currentTagSplit=(${currentTagNum//./ })
+thisTagSplit=(${thisTagNum//./ })
+
+# If major version is the same, continue to check minor version, if that's the same, check patch version
+if [ "${thisTagSplit[0]}" == "${currentTagSplit[0]}" ]; then
+  if [ "${thisTagSplit[1]}" == "${currentTagSplit[1]}" ]; then
+    if [ "${thisTagSplit[2]}" == "${currentTagSplit[2]}" ]; then
+      echo "${RED}${tagErrorMessage}"
+      exit 1
+    elif [ "${thisTagSplit[2]}" -lt "${currentTagSplit[2]}" ]; then
+      echo "${RED}${tagErrorMessage}"
+      exit 1
+    fi
+  elif [ "${thisTagSplit[1]}" -lt "${currentTagSplit[1]}" ]; then
+    echo "${RED}${tagErrorMessage}"
+    exit 1
+  fi
+elif [ "${thisTagSplit[0]}" -lt "${currentTagSplit[0]}" ]; then
+  echo "${RED}${tagErrorMessage}"
+  exit 1
+fi
+
+echo "Latest tag at origin: ${LIGHTGRAY}${currentTag}${RESTORE}"
+echo "You are about to submit the tag: ${LMAGENTA}${tag}${RESTORE}"
+
+while true; do
+  read -p -r "Is this the correct tag? Pressing yes will create this tag and push it to origin which may trigger CI: (y/n) " yn
+  case $yn in
+  [Yy]*)
+    git tag -a "$tag" -m "$msg"
+    git push origin --tags
+    echo "${GREEN}Success! New tag created and pushed to origin: ${LMAGENTA}${tag}${RESTORE}"
+    break
+    ;;
+  [Nn])
+    echo 'Exiting...'
+    exit 1
+    ;;
+  *) echo "Please answer yes or no." ;;
+  esac
+done
