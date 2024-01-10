@@ -12,7 +12,7 @@ If you don't have OhMyZsh installed, install that first as it makes the terminal
 2. Clone this repo to to `~/bash-helpers`: 
 ```
 cd ~/bash-helpers
-git clone git@bitbucket.org:nusxtra/bash-helpers.git ./
+git clone git@github.com:regexj/bash-helpers.git ./
 ```
 3. Export to your PATH environment variable:
 ```
