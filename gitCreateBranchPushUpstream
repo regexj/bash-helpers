@@ -9,10 +9,11 @@
 source ~/bash-helpers/_colours
 
 currentBranchName=$(git branch | grep \* | cut -d ' ' -f2)
+allowedBranches=("main" "develop")
 
-# If the current directory is not develop, then we cannot create a new branch
-if [[ "$currentBranchName" != "develop" ]]; then
-  echo "${RED}Error: You are not on the develop branch. You must be on the develop branch to create new branches."
+# If the current directory is not develop or main, then we cannot create a new branch
+if ! printf '%s\0' "${allowedBranches[@]}" | grep -qwz "$currentBranchName"; then
+  echo "${RED}Error: You are not on the main or develop branch. You must be on the main or develop branch to create new branches."
   echo "You are on branch: $currentBranchName${RESTORE}"
   exit 1
 fi

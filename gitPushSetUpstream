@@ -23,7 +23,7 @@ fi
 echo "You are on the branch: ${LMAGENTA}${branchName}${RESTORE}"
 
 while true; do
-    read -p -r "Is this the correct branch? Pressing yes will run the following command:
+    read -p "Is this the correct branch? Pressing yes will run the following command:
 ${BLUE}git push --set-upstream origin $branchName${RESTORE}
 (y/n) " yn
     case $yn in
