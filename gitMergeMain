@@ -1,0 +1,16 @@
+#!/bin/bash
+
+###################################################
+#   Merge main into current branch, first makes   #
+#   sure that main is up to date                  #
+###################################################
+
+source ~/bash-helpers/_colours
+
+echo "Making sure main branch is up to date"
+git fetch origin main:main
+
+echo "Merging main into current branch"
+git merge main
+
+echo "${GREEN}Success. Handle any conflicts if there any and then run git push${RESTORE}"
