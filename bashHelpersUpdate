@@ -2,7 +2,7 @@
 
 ###########################################
 #   Will update this repo to the latest   #
-#   on origin/develop                     #
+#   on origin/main                        #
 ###########################################
 
 source ~/bash-helpers/_colours
@@ -12,7 +12,7 @@ echo "Updating bash-helpers repo..."
 originalPwd=$(pwd)
 cd ~/bash-helpers || exit
 
-git checkout develop
+git checkout main
 git pull
 
 echo "${GREEN}Bash helpers updated! Returning to original directory.${RESTORE}"
