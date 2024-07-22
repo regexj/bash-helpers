@@ -7,6 +7,8 @@
 
 source ~/bash-helpers/_colours
 
+git fetch
+
 # Show local or remote according to flags set
 while getopts ":lr" opt; do
   case $opt in
