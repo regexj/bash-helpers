@@ -1,0 +1,73 @@
+#!/bin/bash
+
+############################################
+#   Prune all local branches that do not   #
+#   exist on remote. Confirmation needed   #
+#   if no -y flag passed.                  #
+############################################
+
+source ~/bash-helpers/_colours
+
+git fetch -p
+
+# Create two arrays to compare local branches to remote branches
+local=()
+for branch in $(git for-each-ref --format='%(refname:short)' refs/heads); do
+    local+=("${branch}")
+done
+
+remote=()
+origin="origin/"
+for branch in $(git for-each-ref --format='%(refname:short)' refs/remotes); do
+    remote+=("${branch//$origin/}")
+done
+
+# Find all local branches that do not exist on remote
+toPrune=()
+for i in "${local[@]}"; do
+    skip=
+    for j in "${remote[@]}"; do
+        [[ $i == "$j" ]] && { skip=1; break; }
+    done
+    [[ -n $skip ]] || toPrune+=("$i")
+done
+
+# If no branches to prune, exit
+if [ ${#toPrune[@]} -eq 0 ]; then
+    echo "${GREEN}No branches to prune!${RESTORE}"
+    exit 0
+fi
+echo "The following branches will be pruned:"
+for branch in "${toPrune[@]}"; do
+    echo "${RED} ${branch}${RESTORE}"
+done
+
+# If -y flag is not passed, ask for confirmation before pruning
+confirm="Would you like to prune these branches? (y/n) "
+if [ "$1" != "-y" ]; then
+    while true; do
+        read -p "$confirm" yn
+        case $yn in
+        [Yy]*)
+            break
+            ;;
+        [Nn])
+            echo 'Exiting...'
+            exit 1
+            ;;
+        *) echo "Please answer yes or no." ;;
+        esac
+    done
+else
+    echo "$confirm y..."
+fi
+
+
+echo "Pruning branches..."
+
+for branch in "${toPrune[@]}"; do
+    git branch -D "$branch"
+    echo "${GREEN}Branch '${branch}' deleted locally!${RESTORE}"
+done
+
+. gitBranchList
