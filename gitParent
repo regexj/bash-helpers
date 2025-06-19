@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#########################################
+#   Get the name of the parent branch   # 
+#   and echo it into the terminal       #
+#########################################
+
+source ~/bash-helpers/_colours
+
+# Get the name of the parent branch, suppressing any errors by redirecting stderr to /dev/null.
+parentBranch=$(git show-branch -a 2>/dev/null \
+| sed "s/].*//" \
+| grep "\*" \
+| grep -v "$(git rev-parse --abbrev-ref HEAD)" \
+| head -n1 \
+| sed "s/^.*\[//")
+echo "Parent branch: ${LMAGENTA}${parentBranch}${RESTORE}"
