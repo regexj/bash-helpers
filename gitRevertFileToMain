@@ -1,0 +1,20 @@
+#!/bin/bash
+
+################################################
+#   Revert all changes to a single file back   #
+#   to that which is on origin/develop, then   #
+#   immediately commits that reversion         #
+################################################
+
+source ~/bash-helpers/_colours
+
+file=$1
+
+if [ -z "$file" ]; then
+  echo "${RED}You must pass a file path as the 1st arg - this is the file that git will revert back to the origin/main"
+  exit 1
+fi
+
+git checkout origin/main -- "$file"
+
+. gitAcp "File reverted to origin/main: $file"
