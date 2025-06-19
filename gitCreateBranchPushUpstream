@@ -1,22 +1,11 @@
 #!/bin/bash
 
-#############################################
-#   Creates a new branch from develop and   #
-#   pushes it to origin using the script    #
-#   gitPushSetUpstream                      #
-#############################################
+####################################################
+#   Creates a new branch and pushes it to origin   #
+#   using the script gitPushSetUpstream            #
+####################################################
 
 source ~/bash-helpers/_colours
-
-currentBranchName=$(git branch | grep \* | cut -d ' ' -f2)
-allowedBranches=("main" "develop")
-
-# If the current directory is not develop or main, then we cannot create a new branch
-if ! printf '%s\0' "${allowedBranches[@]}" | grep -qwz "$currentBranchName"; then
-  echo "${RED}Error: You are not on the main or develop branch. You must be on the main or develop branch to create new branches."
-  echo "You are on branch: $currentBranchName${RESTORE}"
-  exit 1
-fi
 
 # The new branch name we are creating must be passed as variable 1, ensure a name is passed
 branchName=$1
