@@ -1,8 +1,17 @@
 #!/bin/bash
 
-##################################
-#   Git checkout main and pull   #
-##################################
+######################################
+#   Git checkout a branch and pull   #
+######################################
 
-git checkout "$1"
+source ~/bash-helpers/_colours
+
+branch=$1
+
+if [ -z "$branch" ]; then
+  echo "${RED}You must pass a branch name as the 1st arg - this forms the git checkout branch${RESTORE}"
+  exit 1
+fi
+
+git checkout "$branch"
 git pull
