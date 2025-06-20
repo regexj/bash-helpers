@@ -1,0 +1,8 @@
+#!/bin/bash
+
+##################################
+#   Git checkout main and pull   #
+##################################
+
+git checkout "$1"
+git pull
